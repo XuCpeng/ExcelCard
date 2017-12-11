@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Saber
-  Date: 2017/12/8
-  Time: 11:39
+  Date: 2017/12/9
+  Time: 19:54
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-${user.pwd}
+<h1>请求失败</h1>
 </body>
 </html>

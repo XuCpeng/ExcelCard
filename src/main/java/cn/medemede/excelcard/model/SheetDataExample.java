@@ -164,63 +164,73 @@ public class SheetDataExample {
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdIsNull() {
-            addCriterion("sheet_id is null");
+        public Criteria andSheetNameIsNull() {
+            addCriterion("sheet_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdIsNotNull() {
-            addCriterion("sheet_id is not null");
+        public Criteria andSheetNameIsNotNull() {
+            addCriterion("sheet_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdEqualTo(Integer value) {
-            addCriterion("sheet_id =", value, "sheetId");
+        public Criteria andSheetNameEqualTo(String value) {
+            addCriterion("sheet_name =", value, "sheetName");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdNotEqualTo(Integer value) {
-            addCriterion("sheet_id <>", value, "sheetId");
+        public Criteria andSheetNameNotEqualTo(String value) {
+            addCriterion("sheet_name <>", value, "sheetName");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdGreaterThan(Integer value) {
-            addCriterion("sheet_id >", value, "sheetId");
+        public Criteria andSheetNameGreaterThan(String value) {
+            addCriterion("sheet_name >", value, "sheetName");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sheet_id >=", value, "sheetId");
+        public Criteria andSheetNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sheet_name >=", value, "sheetName");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdLessThan(Integer value) {
-            addCriterion("sheet_id <", value, "sheetId");
+        public Criteria andSheetNameLessThan(String value) {
+            addCriterion("sheet_name <", value, "sheetName");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdLessThanOrEqualTo(Integer value) {
-            addCriterion("sheet_id <=", value, "sheetId");
+        public Criteria andSheetNameLessThanOrEqualTo(String value) {
+            addCriterion("sheet_name <=", value, "sheetName");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdIn(List<Integer> values) {
-            addCriterion("sheet_id in", values, "sheetId");
+        public Criteria andSheetNameLike(String value) {
+            addCriterion("sheet_name like", value, "sheetName");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdNotIn(List<Integer> values) {
-            addCriterion("sheet_id not in", values, "sheetId");
+        public Criteria andSheetNameNotLike(String value) {
+            addCriterion("sheet_name not like", value, "sheetName");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdBetween(Integer value1, Integer value2) {
-            addCriterion("sheet_id between", value1, value2, "sheetId");
+        public Criteria andSheetNameIn(List<String> values) {
+            addCriterion("sheet_name in", values, "sheetName");
             return (Criteria) this;
         }
 
-        public Criteria andSheetIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("sheet_id not between", value1, value2, "sheetId");
+        public Criteria andSheetNameNotIn(List<String> values) {
+            addCriterion("sheet_name not in", values, "sheetName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSheetNameBetween(String value1, String value2) {
+            addCriterion("sheet_name between", value1, value2, "sheetName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSheetNameNotBetween(String value1, String value2) {
+            addCriterion("sheet_name not between", value1, value2, "sheetName");
             return (Criteria) this;
         }
 
@@ -291,76 +301,6 @@ public class SheetDataExample {
 
         public Criteria andUserIdNotBetween(String value1, String value2) {
             addCriterion("user_id not between", value1, value2, "userId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListIsNull() {
-            addCriterion("data_list is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListIsNotNull() {
-            addCriterion("data_list is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListEqualTo(String value) {
-            addCriterion("data_list =", value, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListNotEqualTo(String value) {
-            addCriterion("data_list <>", value, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListGreaterThan(String value) {
-            addCriterion("data_list >", value, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListGreaterThanOrEqualTo(String value) {
-            addCriterion("data_list >=", value, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListLessThan(String value) {
-            addCriterion("data_list <", value, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListLessThanOrEqualTo(String value) {
-            addCriterion("data_list <=", value, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListLike(String value) {
-            addCriterion("data_list like", value, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListNotLike(String value) {
-            addCriterion("data_list not like", value, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListIn(List<String> values) {
-            addCriterion("data_list in", values, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListNotIn(List<String> values) {
-            addCriterion("data_list not in", values, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListBetween(String value1, String value2) {
-            addCriterion("data_list between", value1, value2, "dataList");
-            return (Criteria) this;
-        }
-
-        public Criteria andDataListNotBetween(String value1, String value2) {
-            addCriterion("data_list not between", value1, value2, "dataList");
             return (Criteria) this;
         }
     }

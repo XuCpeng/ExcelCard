@@ -3,9 +3,17 @@
 <mapper namespace="cn.medemede.excelcard.dao.SheetColumnMapper">
   <resultMap id="BaseResultMap" type="cn.medemede.excelcard.model.SheetColumn">
     <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="sheet_name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="column_list" javaType="java.lang.String" jdbcType="CHAR" />
+      <idArg column="sheet_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="validity" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="locked" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.medemede.excelcard.model.SheetColumn">
+    <constructor>
+      <idArg column="sheet_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="validity" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="locked" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="column_list" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -67,8 +75,27 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sheet_name, column_list
+    sheet_name, validity, locked
   </sql>
+  <sql id="Blob_Column_List">
+    column_list
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="cn.medemede.excelcard.model.SheetColumnExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sheet_column
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" parameterType="cn.medemede.excelcard.model.SheetColumnExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -83,15 +110,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from sheet_column
-    where id = #{id,jdbcType=INTEGER}
+    where sheet_name = #{sheetName,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from sheet_column
-    where id = #{id,jdbcType=INTEGER}
+    where sheet_name = #{sheetName,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="cn.medemede.excelcard.model.SheetColumnExample">
     delete from sheet_column
@@ -100,33 +129,39 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.medemede.excelcard.model.SheetColumn">
-    insert into sheet_column (id, sheet_name, column_list
-      )
-    values (#{id,jdbcType=INTEGER}, #{sheetName,jdbcType=VARCHAR}, #{columnList,jdbcType=CHAR}
-      )
+    insert into sheet_column (sheet_name, validity, locked, 
+      column_list)
+    values (#{sheetName,jdbcType=VARCHAR}, #{validity,jdbcType=DATE}, #{locked,jdbcType=INTEGER}, 
+      #{columnList,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.medemede.excelcard.model.SheetColumn">
     insert into sheet_column
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="sheetName != null">
         sheet_name,
+      </if>
+      <if test="validity != null">
+        validity,
+      </if>
+      <if test="locked != null">
+        locked,
       </if>
       <if test="columnList != null">
         column_list,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="sheetName != null">
         #{sheetName,jdbcType=VARCHAR},
       </if>
+      <if test="validity != null">
+        #{validity,jdbcType=DATE},
+      </if>
+      <if test="locked != null">
+        #{locked,jdbcType=INTEGER},
+      </if>
       <if test="columnList != null">
-        #{columnList,jdbcType=CHAR},
+        #{columnList,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -139,25 +174,38 @@
   <update id="updateByExampleSelective" parameterType="map">
     update sheet_column
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
       <if test="record.sheetName != null">
         sheet_name = #{record.sheetName,jdbcType=VARCHAR},
       </if>
+      <if test="record.validity != null">
+        validity = #{record.validity,jdbcType=DATE},
+      </if>
+      <if test="record.locked != null">
+        locked = #{record.locked,jdbcType=INTEGER},
+      </if>
       <if test="record.columnList != null">
-        column_list = #{record.columnList,jdbcType=CHAR},
+        column_list = #{record.columnList,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update sheet_column
+    set sheet_name = #{record.sheetName,jdbcType=VARCHAR},
+      validity = #{record.validity,jdbcType=DATE},
+      locked = #{record.locked,jdbcType=INTEGER},
+      column_list = #{record.columnList,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByExample" parameterType="map">
     update sheet_column
-    set id = #{record.id,jdbcType=INTEGER},
-      sheet_name = #{record.sheetName,jdbcType=VARCHAR},
-      column_list = #{record.columnList,jdbcType=CHAR}
+    set sheet_name = #{record.sheetName,jdbcType=VARCHAR},
+      validity = #{record.validity,jdbcType=DATE},
+      locked = #{record.locked,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -165,19 +213,44 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.medemede.excelcard.model.SheetColumn">
     update sheet_column
     <set>
-      <if test="sheetName != null">
-        sheet_name = #{sheetName,jdbcType=VARCHAR},
+      <if test="validity != null">
+        validity = #{validity,jdbcType=DATE},
+      </if>
+      <if test="locked != null">
+        locked = #{locked,jdbcType=INTEGER},
       </if>
       <if test="columnList != null">
-        column_list = #{columnList,jdbcType=CHAR},
+        column_list = #{columnList,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where sheet_name = #{sheetName,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.medemede.excelcard.model.SheetColumn">
+    update sheet_column
+    set validity = #{validity,jdbcType=DATE},
+      locked = #{locked,jdbcType=INTEGER},
+      column_list = #{columnList,jdbcType=LONGVARCHAR}
+    where sheet_name = #{sheetName,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.medemede.excelcard.model.SheetColumn">
     update sheet_column
-    set sheet_name = #{sheetName,jdbcType=VARCHAR},
-      column_list = #{columnList,jdbcType=CHAR}
-    where id = #{id,jdbcType=INTEGER}
+    set validity = #{validity,jdbcType=DATE},
+      locked = #{locked,jdbcType=INTEGER}
+    where sheet_name = #{sheetName,jdbcType=VARCHAR}
   </update>
+  <select id="selectByLocked" resultMap="ResultMapWithBLOBs">
+    SELECT
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM sheet_column
+    WHERE locked=1
+  </select>
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+    SELECT
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM sheet_column
+  </select>
 </mapper>

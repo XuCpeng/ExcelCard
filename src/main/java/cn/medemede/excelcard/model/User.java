@@ -1,22 +1,16 @@
 package cn.medemede.excelcard.model;
 
 public class User {
-
     private String id;
 
     private String pwd;
 
-    public User(String id, String pwd) {
+    private Integer power;
+
+    public User(String id, String pwd, Integer power) {
         this.id = id;
         this.pwd = pwd;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", pwd='" + pwd + '\'' +
-                '}';
+        this.power = power;
     }
 
     public User() {
@@ -39,4 +33,11 @@ public class User {
         this.pwd = pwd == null ? null : pwd.trim();
     }
 
+    public Integer getPower() {
+        return power;
+    }
+
+    public void setPower(Integer power) {
+        this.power = power;
+    }
 }

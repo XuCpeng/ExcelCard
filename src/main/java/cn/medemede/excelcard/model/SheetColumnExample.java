@@ -1,6 +1,8 @@
 package cn.medemede.excelcard.model;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class SheetColumnExample {
@@ -104,64 +106,30 @@ public class SheetColumnExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andIdIsNull() {
-            addCriterion("id is null");
-            return (Criteria) this;
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
         }
 
-        public Criteria andIdIsNotNull() {
-            addCriterion("id is not null");
-            return (Criteria) this;
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
         }
 
-        public Criteria andIdEqualTo(Integer value) {
-            addCriterion("id =", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdNotEqualTo(Integer value) {
-            addCriterion("id <>", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdGreaterThan(Integer value) {
-            addCriterion("id >", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("id >=", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdLessThan(Integer value) {
-            addCriterion("id <", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdLessThanOrEqualTo(Integer value) {
-            addCriterion("id <=", value, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdIn(List<Integer> values) {
-            addCriterion("id in", values, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdNotIn(List<Integer> values) {
-            addCriterion("id not in", values, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdBetween(Integer value1, Integer value2) {
-            addCriterion("id between", value1, value2, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("id not between", value1, value2, "id");
-            return (Criteria) this;
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andSheetNameIsNull() {
@@ -234,73 +202,123 @@ public class SheetColumnExample {
             return (Criteria) this;
         }
 
-        public Criteria andColumnListIsNull() {
-            addCriterion("column_list is null");
+        public Criteria andValidityIsNull() {
+            addCriterion("validity is null");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListIsNotNull() {
-            addCriterion("column_list is not null");
+        public Criteria andValidityIsNotNull() {
+            addCriterion("validity is not null");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListEqualTo(String value) {
-            addCriterion("column_list =", value, "columnList");
+        public Criteria andValidityEqualTo(Date value) {
+            addCriterionForJDBCDate("validity =", value, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListNotEqualTo(String value) {
-            addCriterion("column_list <>", value, "columnList");
+        public Criteria andValidityNotEqualTo(Date value) {
+            addCriterionForJDBCDate("validity <>", value, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListGreaterThan(String value) {
-            addCriterion("column_list >", value, "columnList");
+        public Criteria andValidityGreaterThan(Date value) {
+            addCriterionForJDBCDate("validity >", value, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListGreaterThanOrEqualTo(String value) {
-            addCriterion("column_list >=", value, "columnList");
+        public Criteria andValidityGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("validity >=", value, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListLessThan(String value) {
-            addCriterion("column_list <", value, "columnList");
+        public Criteria andValidityLessThan(Date value) {
+            addCriterionForJDBCDate("validity <", value, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListLessThanOrEqualTo(String value) {
-            addCriterion("column_list <=", value, "columnList");
+        public Criteria andValidityLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("validity <=", value, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListLike(String value) {
-            addCriterion("column_list like", value, "columnList");
+        public Criteria andValidityIn(List<Date> values) {
+            addCriterionForJDBCDate("validity in", values, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListNotLike(String value) {
-            addCriterion("column_list not like", value, "columnList");
+        public Criteria andValidityNotIn(List<Date> values) {
+            addCriterionForJDBCDate("validity not in", values, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListIn(List<String> values) {
-            addCriterion("column_list in", values, "columnList");
+        public Criteria andValidityBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("validity between", value1, value2, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListNotIn(List<String> values) {
-            addCriterion("column_list not in", values, "columnList");
+        public Criteria andValidityNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("validity not between", value1, value2, "validity");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListBetween(String value1, String value2) {
-            addCriterion("column_list between", value1, value2, "columnList");
+        public Criteria andLockedIsNull() {
+            addCriterion("locked is null");
             return (Criteria) this;
         }
 
-        public Criteria andColumnListNotBetween(String value1, String value2) {
-            addCriterion("column_list not between", value1, value2, "columnList");
+        public Criteria andLockedIsNotNull() {
+            addCriterion("locked is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedEqualTo(Integer value) {
+            addCriterion("locked =", value, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedNotEqualTo(Integer value) {
+            addCriterion("locked <>", value, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedGreaterThan(Integer value) {
+            addCriterion("locked >", value, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedGreaterThanOrEqualTo(Integer value) {
+            addCriterion("locked >=", value, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedLessThan(Integer value) {
+            addCriterion("locked <", value, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedLessThanOrEqualTo(Integer value) {
+            addCriterion("locked <=", value, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedIn(List<Integer> values) {
+            addCriterion("locked in", values, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedNotIn(List<Integer> values) {
+            addCriterion("locked not in", values, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedBetween(Integer value1, Integer value2) {
+            addCriterion("locked between", value1, value2, "locked");
+            return (Criteria) this;
+        }
+
+        public Criteria andLockedNotBetween(Integer value1, Integer value2) {
+            addCriterion("locked not between", value1, value2, "locked");
             return (Criteria) this;
         }
     }

@@ -4,9 +4,16 @@
   <resultMap id="BaseResultMap" type="cn.medemede.excelcard.model.SheetData">
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="sheet_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sheet_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="data_list" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.medemede.excelcard.model.SheetData">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sheet_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="data_list" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
     </constructor>
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -68,8 +75,27 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sheet_id, user_id, data_list
+    id, sheet_name, user_id
   </sql>
+  <sql id="Blob_Column_List">
+    data_list
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="cn.medemede.excelcard.model.SheetDataExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sheet_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" parameterType="cn.medemede.excelcard.model.SheetDataExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -84,9 +110,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from sheet_data
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -101,10 +129,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.medemede.excelcard.model.SheetData">
-    insert into sheet_data (id, sheet_id, user_id, 
+    insert into sheet_data (id, sheet_name, user_id, 
       data_list)
-    values (#{id,jdbcType=INTEGER}, #{sheetId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
-      #{dataList,jdbcType=CHAR})
+    values (#{id,jdbcType=INTEGER}, #{sheetName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{dataList,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.medemede.excelcard.model.SheetData">
     insert into sheet_data
@@ -112,8 +140,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="sheetId != null">
-        sheet_id,
+      <if test="sheetName != null">
+        sheet_name,
       </if>
       <if test="userId != null">
         user_id,
@@ -126,14 +154,14 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="sheetId != null">
-        #{sheetId,jdbcType=INTEGER},
+      <if test="sheetName != null">
+        #{sheetName,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=VARCHAR},
       </if>
       <if test="dataList != null">
-        #{dataList,jdbcType=CHAR},
+        #{dataList,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -149,16 +177,26 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.sheetId != null">
-        sheet_id = #{record.sheetId,jdbcType=INTEGER},
+      <if test="record.sheetName != null">
+        sheet_name = #{record.sheetName,jdbcType=VARCHAR},
       </if>
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=VARCHAR},
       </if>
       <if test="record.dataList != null">
-        data_list = #{record.dataList,jdbcType=CHAR},
+        data_list = #{record.dataList,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update sheet_data
+    set id = #{record.id,jdbcType=INTEGER},
+      sheet_name = #{record.sheetName,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      data_list = #{record.dataList,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -166,9 +204,8 @@
   <update id="updateByExample" parameterType="map">
     update sheet_data
     set id = #{record.id,jdbcType=INTEGER},
-      sheet_id = #{record.sheetId,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=VARCHAR},
-      data_list = #{record.dataList,jdbcType=CHAR}
+      sheet_name = #{record.sheetName,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -176,23 +213,55 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.medemede.excelcard.model.SheetData">
     update sheet_data
     <set>
-      <if test="sheetId != null">
-        sheet_id = #{sheetId,jdbcType=INTEGER},
+      <if test="sheetName != null">
+        sheet_name = #{sheetName,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=VARCHAR},
       </if>
       <if test="dataList != null">
-        data_list = #{dataList,jdbcType=CHAR},
+        data_list = #{dataList,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.medemede.excelcard.model.SheetData">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.medemede.excelcard.model.SheetData">
     update sheet_data
-    set sheet_id = #{sheetId,jdbcType=INTEGER},
+    set sheet_name = #{sheetName,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR},
-      data_list = #{dataList,jdbcType=CHAR}
+      data_list = #{dataList,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateByPrimaryKey" parameterType="cn.medemede.excelcard.model.SheetData">
+    update sheet_data
+    set sheet_name = #{sheetName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectBySheetName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        SELECT
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        FROM sheet_data
+        WHERE sheet_name = #{sheetName,jdbcType=VARCHAR}
+    </select>
+
+  <select id="findSheetNameByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT sheet_name
+    FROM sheet_data
+    WHERE user_id=#{userId,jdbcType=VARCHAR}
+  </select>
+
+    <select id="findByUseridAndSheetName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        SELECT
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        FROM sheet_data
+        WHERE user_id=#{userId,jdbcType=VARCHAR}
+        AND sheet_name = #{sheetName,jdbcType=VARCHAR}
+    </select>
+
 </mapper>
