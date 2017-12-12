@@ -73,7 +73,9 @@ public class LoginController {
                     mv.addObject("sheetColumnList", sheetColumnList);
                 }
             }
+            mv.addObject("user",user);
         }
+
         mv.setViewName(forword);
         return mv;
     }

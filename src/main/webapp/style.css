@@ -11,7 +11,7 @@ body {
 	background-size: 100% 1.2em;
 }
 h1 {
-	font-family: sans-serif;
+	font-family: 楷体;
 	text-align: center;
 	padding-top: 4em;
 	font-weight: 400;
@@ -20,7 +20,7 @@ h1 {
 }
 
 .login-form {
-	background: wheat;
+	background: whitesmoke;
 	position: relative;
 	width: 30%;
 	margin: 3% auto 0 auto;
